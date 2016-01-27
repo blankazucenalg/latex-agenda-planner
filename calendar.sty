@@ -19,12 +19,12 @@
 
 \def\dayheader#1#2{
   \noindent
-  \begin{minipage}[t]{0.87\hsize}
+  \begin{minipage}[t]{0.6\hsize}
     \noindent
     \raggedright
     \textit{#1}
   \end{minipage}
-  \begin{minipage}[t]{0.1\hsize}
+  \begin{minipage}[t]{0.05\hsize}
     \noindent
     \raggedleft
     \textit{#2}
@@ -36,7 +36,7 @@
 
 \let\@colbreak=&
 
-\def\printdayname#1{\hfil\textsc\small{#1}\hfil}
+\def\printdayname#1{\hfil{\scriptsize#1}\hfil}
 
 \newcommand{\dayname}[1]{
   \ifnum#1=1 Domingo\else
