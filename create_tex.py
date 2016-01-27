@@ -21,7 +21,7 @@ def create_calendar(year, month):
           "%	MONTH AND YEAR SECTION \n" \
           "%---------------------------------------------------------------------------------------- \n" \
           "\\begin{center} \n" \
-          "\\textsc{\\LARGE " + get_month(month) + "}\\\\ % Month \n" \
+          "\\textsc{\\Huge \color{RawSienna}" + get_month(month) + "}\\\\ % Month \n" \
                                                    "\\textsc{\\large " + str(year) + "} % Year \n" \
                                                                                      "\\end{center} \n" \
                                                                                      "%---------------------------------------------------------------------------------------- \n" \
@@ -71,6 +71,30 @@ def create_planner(year, month):
         var += "\\afterpage{\\blankpage}"
     return var
 
+def personal_data():
+    var = "\\pagestyle{empty} % Removes the page number from the bottom of the page \n" \
+          "\\noindent \n" \
+          "{\\Huge Datos personales} \\hfill \\break" \
+            "\\hrule depth 0.3mm width \hsize \kern 1pt \hrule width \hsize height 0.2mm \\hfill \\break \n " \
+            "\\hfill \\break \nNombre: {\color{RawSienna}\\rule{9.3cm}{0.1mm}}" \
+            "\\hfill \\break \nTel\\\'efono: {\color{RawSienna}\\rule{9.2cm}{0.1mm}}" \
+            "\\hfill \\break \nCelular: {\color{RawSienna}\\rule{9.4cm}{0.1mm}}" \
+            "\\hfill \\break \nE-mail: {\color{RawSienna}\\rule{9.5cm}{0.1mm}}" \
+            "\\hfill \\break \nCumplea\~nos: {\color{RawSienna}\\rule{8.7cm}{0.1mm}}" \
+            "\\hfill \\break \nTipo de sangre: {\color{RawSienna}\\rule{3.5cm}{0.1mm}}  " \
+                            "\nC.P.: {\color{RawSienna}\\rule{3.8cm}{0.1mm}}" \
+            "\\hfill \\break \nDirecci\\\'on: {\color{RawSienna}\\rule{9.1cm}{0.1mm}}" \
+            "\\hfill \\break \nAlergias: {\color{RawSienna}\\rule{9.3cm}{0.1mm}} \\hfill \\break \\hfill \\break" \
+            "\\hfill \\break {\\Large En caso de emergencia informar a:} \\hfill \\break" \
+            "\\hrule width \hsize \kern 2pt \\hfill \\break \n " \
+            "\\hfill \\break \nNombre: {\color{RawSienna}\\rule{9.3cm}{0.1mm}}" \
+            "\\hfill \\break \nTel\\\'efono: {\color{RawSienna}\\rule{9.2cm}{0.1mm}} \\hfill \\break" \
+            "\\hfill \\break \nNombre: {\color{RawSienna}\\rule{9.3cm}{0.1mm}}" \
+            "\\hfill \\break \nTel\\\'efono: {\color{RawSienna}\\rule{9.2cm}{0.1mm}} \\hfill \\break " \
+            "\\hfill \\break {\\Large Notas:} \\hfill \\break" \
+            "\\hrule width \hsize \kern 2pt \\hfill \\break \n " \
+            "\\afterpage{\\blankpage}"
+    return var
 
 f = open('agenda.tex', 'w')
 f.write("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% \n"
@@ -111,6 +135,7 @@ f.write("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% \n"
         "\\begin{document} \n")
 
 year = date.today().year
+f.write(personal_data())
 for month in range(1, 13):
     f.write("\\newpage \\newgeometry{left=0cm,bottom=0cm,right=0cm,top=2.3in}")
     f.write(create_calendar(year, month))
