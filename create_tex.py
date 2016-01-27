@@ -25,7 +25,7 @@ def create_calendar(year, month):
                                                    "\\textsc{\\large " + str(year) + "} % Year \n" \
                                                                                      "\\end{center} \n" \
                                                                                      "%---------------------------------------------------------------------------------------- \n" \
-                                                                                     "\\begin{calendar}{13.8cm} \n"
+                                                                                     "\\begin{calendar}{11.7cm} \n"
     begin, days = monthrange(year, month)
     for i in range(begin):
         var += "\\BlankDay \n"
@@ -48,7 +48,7 @@ def create_calendar(year, month):
 def create_planner(year, month):
     id, days = monthrange(year, month)
     page = 1
-    var = "{\\Huge "+get_month(month)+"} ~ {\color{RawSienna} "+str(year)+"} \n \\hfill \\break" \
+    var = "{\\Huge "+get_month(month)+"} ~ {\color{RawSienna} \\large "+str(year)+"} \n \\hfill \\break" \
           "\\hrule depth 0.3mm width \hsize \kern 1pt \hrule width \hsize height 0.2mm \n"
     for day in range(1,days+1):
         if page % 2 != 0:
@@ -62,10 +62,10 @@ def create_planner(year, month):
         if(day %4 == 0):
             page += 1
             if page % 2 != 0:
-                var += "\\newpage {\\Huge "+get_month(month)+"} ~ {\color{RawSienna} "+str(year)+"} \n \\hfill \\break" \
+                var += "\\newpage \\newgeometry{top=1cm, right=1.5cm,bottom=0.5cm, left=0.8cm} {\\Huge "+get_month(month)+"} ~ {\color{RawSienna} \\large"+str(year)+"} \n \\hfill \\break" \
                 "\\hrule depth 0.3mm width \hsize \kern 1pt \hrule width \hsize height 0.2mm \n"
             if page % 2 == 0:
-                var += "\\newpage \\begin{flushright}{\\Huge "+get_month(month)+"} ~ {\color{RawSienna} "+str(year)+"} \\end{flushright} \n" \
+                var += "\\newpage \\newgeometry{top=1cm, left=1.5cm,bottom=0.5cm, right=0.8cm} \\begin{flushright}{\\Huge "+get_month(month)+"} ~ {\color{RawSienna} \\large "+str(year)+"} \\end{flushright} \n" \
                 "\\hrule depth 0.3mm width \hsize \kern 1pt \hrule width \hsize height 0.2mm \n"
     if(page % 2 == 0):
         var += "\\afterpage{\\blankpage}"
@@ -98,12 +98,18 @@ def personal_data():
 
 f = open('agenda.tex', 'w')
 f.write("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% \n"
+        "% Annual Planner \n"
+        "% \n"
+        "% This template has been made by: \n"
+        "% Blanca Azucena Lopez G. (https://github.com/blankazucenalg/latex-agenda-planner) \n"
+        "% \n"
+        "% \n"
+        "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% \n"
         "% Monthly Calendar \n"
         "% LaTeX Template \n"
         "% \n"
         "% This template has been downloaded from: \n"
         "% http://www.latextemplates.com \n"
-        "% \n"
         "% Original calendar style author: \n"
         "% Evan Sultanik (http://www.sultanik.com/LaTeX_calendar_style) \n"
         "% \n"
@@ -118,11 +124,11 @@ f.write("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% \n"
         "%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS \n"
         "%---------------------------------------------------------------------------------------- \n"
         " \n"
-        "\\documentclass[portrait,a5paper]{article} \n"
+        "\\documentclass[portrait]{article} \n"
         " \n"
         "\\usepackage{calendar} % Use the calendar.sty style \n"
         " \n"
-        "\\usepackage[portrait,margin=2cm]{geometry} \n"
+        "\\usepackage[paperwidth=13.2cm, paperheight=19.5cm, top=1cm, left=1.5cm,bottom=0.5cm,right=0.8cm]{geometry} \n"
         "\\usepackage{color} \n"
         "\\usepackage[dvipsnames]{xcolor} \n"
         "\\usepackage{ragged2e} \n"
@@ -137,8 +143,8 @@ f.write("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% \n"
 year = date.today().year
 f.write(personal_data())
 for month in range(1, 13):
-    f.write("\\newpage \\newgeometry{left=0cm,bottom=0cm,right=0cm,top=2.3in}")
+    f.write("\\newpage \\newgeometry{left=0.5cm,bottom=0.5cm,right=0.5cm,top=2.3in}")
     f.write(create_calendar(year, month))
-    f.write("\\newpage \\restoregeometry \\newpage")
+    f.write("\\newpage \\restoregeometry \\newpage \\newgeometry{top=1cm, right=1.5cm,bottom=0.5cm, left=0.8cm}")
     f.write(create_planner(year, month))
 f.write("\\end{document} \n")
