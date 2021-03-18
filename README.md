@@ -3,11 +3,21 @@ It creates a LaTex file using a python script to create a planner for the curren
 
 ## Usage
 
-You will require python > 3.6 and have installed `texlive-full` in your computer. Then you can simply run
+You will require python > 3.6 and have installed `texlive-full` in your computer. 
+
+In [`create_tex.py`](create_tex.py) you can edit the parameters when the `LatexPlanner` is created to select a color, language, font family and if you want the calender to start on Sunday or Monday.
+
+![example_code](example_code.png)
+
+Then you can simply run
 
 ```bash
 make all
 ```
+
+This will generate a `.tex` file and a `.pdf` ready to print
+
+![example_planner](example_planner.png)
 
 ## Colors 
 

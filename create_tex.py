@@ -92,15 +92,56 @@ class LaTexColor(Enum):
         return str(self.value)
 
 
+class PlannerLanguages(Enum):
+    ES = {
+        'personal_data': 'Datos personales',
+        'name': 'Nombre',
+        'phone': 'Tel\\\'efono',
+        'cellphone': 'Celular',
+        'email': 'E-mail',
+        'birthday': 'Cumplea\\~nos',
+        'blood_type': 'Tipo de sangre',
+        'zip_code': 'C.P.',
+        'address': 'Direcci\\\'on',
+        'allergies': 'Alergias',
+        'in_case_emergency': 'En caso de emergencia informar a',
+        'notes': 'Notas',
+        'months': {1: 'Enero', 2: 'Febrero', 3: 'Marzo', 4: 'Abril', 5: 'Mayo', 6: 'Junio', 7: 'Julio',
+                   8: 'Agosto', 9: 'Septiembre', 10: 'Octubre', 11: 'Noviembre', 12: 'Diciembre'},
+        'weekday': {0: 'Lunes', 1: 'Martes', 2: 'Mi\\\'ercoles', 3: 'Jueves', 4: 'Viernes', 5: 'S\\\'abado',
+                    6: 'Domingo'}
+    }
+    EN = {
+        'personal_data': 'Personal information',
+        'name': 'Name',
+        'phone': 'Phone',
+        'cellphone': 'Cellphone',
+        'email': 'E-mail',
+        'birthday': 'Birthday',
+        'blood_type': 'Blood type',
+        'zip_code': 'ZIP Code',
+        'address': 'Address',
+        'allergies': 'Allergies',
+        'in_case_emergency': 'In case of emergency inform',
+        'notes': 'Notes',
+        'months': {1: 'January', 2: 'February', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July',
+                   8: 'August', 9: 'September', 10: 'October', 11: 'November', 12: 'December'},
+        'weekday': {0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday', 4: 'Friday', 5: 'Saturday',
+                    6: 'Sunday'}
+    }
+
+    def __str__(self):
+        return str(self.value)
+
+
 class LaTexPlanner:
 
-    def __init__(self, color=LaTexColor.NavyBlue, language='es', font_family=FontFamily.SANS_SERIF,
+    def __init__(self, color=LaTexColor.NavyBlue, language=PlannerLanguages.EN, font_family=FontFamily.SANS_SERIF,
                  start_week_monday=True):
         self.color = color
-        self.lang = language
         self.font_family = font_family
         self.start_week_monday = start_week_monday
-        self.t = self.i18n(self.lang)
+        self.t = language.value
         self.generate_calendar_sty()
 
     def generate_calendar_sty(self):
@@ -111,57 +152,8 @@ class LaTexPlanner:
                             'thursday', 'friday', 'saturday', 'sunday']
                 days = {k: v for k, v in zip(
                     day_keys, self.t['weekday'].values())}
-                content = template.substitute(days)
+                content = template.safe_substitute(days)
                 file.write(content)
-
-    def i18n(self, language: str):
-        """
-        Return dictionary with defined phrases for i18n
-        :param language: Selected language (2 chars specification 'es', 'en')
-        :return:
-        """
-        defined_languages = {
-            'es': {
-                'personal_data': 'Datos personales',
-                'name': 'Nombre',
-                'phone': 'Tel\\\'efono',
-                'cellphone': 'Celular',
-                'email': 'E-mail',
-                'birthday': 'Cumplea\\~nos',
-                'blood_type': 'Tipo de sangre',
-                'zip_code': 'C.P.',
-                'address': 'Direcci\\\'on',
-                'allergies': 'Alergias',
-                'in_case_emergency': 'En caso de emergencia informar a',
-                'notes': 'Notas',
-                'months': {1: 'Enero', 2: 'Febrero', 3: 'Marzo', 4: 'Abril', 5: 'Mayo', 6: 'Junio', 7: 'Julio',
-                           8: 'Agosto', 9: 'Septiembre', 10: 'Octubre', 11: 'Noviembre', 12: 'Diciembre'},
-                'weekday': {0: 'Lunes', 1: 'Martes', 2: 'Mi\\\'ercoles', 3: 'Jueves', 4: 'Viernes', 5: 'S\\\'abado',
-                            6: 'Domingo'}
-            },
-            'en': {
-                'personal_data': 'Personal information',
-                'name': 'Name',
-                'phone': 'Phone',
-                'cellphone': 'Cellphone',
-                'email': 'E-mail',
-                'birthday': 'Birthday',
-                'blood_type': 'Blood type',
-                'zip_code': 'ZIP Code',
-                'address': 'Address',
-                'allergies': 'Allergies',
-                'in_case_emergency': 'In case of emergency inform',
-                'notes': 'Notes',
-                'months': {1: 'January', 2: 'February', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July',
-                           8: 'August', 9: 'September', 10: 'October', 11: 'November', 12: 'December'},
-                'weekday': {0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday', 4: 'Friday', 5: 'Saturday',
-                            6: 'Sunday'}
-            }
-        }
-        if language not in defined_languages:
-            raise ValueError('Language must be in %s',
-                             defined_languages.keys())
-        return defined_languages[language]
 
     def get_month(self, month_number: int):
         """
@@ -204,7 +196,7 @@ class LaTexPlanner:
                        "\\textsc{\\large $year} % Year \n"
                        "\\end{center} \n"
                        "%---------------------------------------------------------------------------------------- \n"
-                       "\\begin{calendar}{11.7cm} \n").substitute(
+                       "\\begin{calendar}{11.7cm} \n").safe_substitute(
             {'color': self.color, 'starting_day_number': starting_day_number, 'year': year,
              'month_name': self.get_month(month)})
         weekday_begins, days_in_month = monthrange(year, month)
@@ -237,7 +229,7 @@ class LaTexPlanner:
         var = Template("{\\Huge $month_name} ~ {\\color{$color} \\large $year} \n "
                        "\\hfill \\break "
                        "\\hrule depth 0.3mm width \\hsize \\kern 1pt \\hrule width \\hsize height 0.2mm \n"
-                       ).substitute(month_name=month_name, color=self.color, year=year)
+                       ).safe_substitute(month_name=month_name, color=self.color, year=year)
         for day in range(1, days_in_month + 1):
             weekday_name = self.get_weekday(date(year, month, day).weekday())
             if 0 != page % 2:
@@ -252,8 +244,8 @@ class LaTexPlanner:
                                          "{\\LARGE\\color{$color} \\textbf{$day}} \\end{flushright}"
                                          "\\hrule width \\hsize \\kern 2pt \\hfill \\break "
                                          "\\hfill \\break \\hfill \\break \\hfill \\break \\hfill \\break \\break\n")
-            var += template_page.substitute(weekday_name=weekday_name,
-                                            color=self.color, day=day)
+            var += template_page.safe_substitute(weekday_name=weekday_name,
+                                                 color=self.color, day=day)
 
             if day % max_days_per_page == 0:
                 # Add new page
@@ -269,8 +261,8 @@ class LaTexPlanner:
                                              '\\begin{flushright} {\\Huge $month_name} ~ {\\color{$color} '
                                              '\\large $year} \\end{flushright} \n \\hrule depth 0.3mm width \\hsize '
                                              '\\kern 1pt \\hrule width \\hsize height 0.2mm \n')
-                var += template_page.substitute(month_name=month_name,
-                                                color=self.color, year=year)
+                var += template_page.safe_substitute(month_name=month_name,
+                                                     color=self.color, year=year)
         if 0 == page % 2:
             var += '\\afterpage{\\blankpage}'
         return var
@@ -279,7 +271,7 @@ class LaTexPlanner:
 
         with open('templates/personal_data.tex', 'r') as personal_info_template:
             template = LaTexDelimiterTemplate(personal_info_template.read())
-        return template.substitute(self.t, color=self.color)
+        return template.safe_substitute(self.t, color=self.color)
 
     def generate_annual_planner(self):
         with open('agenda.tex', 'w') as f:
@@ -348,7 +340,11 @@ class LaTexPlanner:
 
 def main():
     # Fav colors: 'NavyBlue', 'Dandelion', 'RawSienna'
-    planner = LaTexPlanner(LaTexColor.Dandelion, language='es')
+    planner = LaTexPlanner(color=LaTexColor.Dandelion,
+                           language=PlannerLanguages.ES,
+                           font_family=FontFamily.SANS_SERIF,
+                           start_week_monday=True
+                           )
     planner.generate_annual_planner()
 
 
